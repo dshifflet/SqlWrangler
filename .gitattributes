@@ -1,0 +1,3 @@
+* text=off
+*.cs     diff=csharp
+*.tt text eol=lf
