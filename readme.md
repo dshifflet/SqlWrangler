@@ -61,7 +61,7 @@ With SQL Wrangler you can...
 Stick them in the file "data-connectionStrings.config"
 
 If you want to prompt for a user name and password do something like.
-DATA SOURCE=TNS_SOMETHING;PASSWORD={password};USER ID={username};enlist=dynamic;
+DATA SOURCE=TNS_SOMETHING;PASSWORD={password};USER ID={username};
 
 SAMPLE _data-connectionStrings.config_
 ```
