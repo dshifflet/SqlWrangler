@@ -58,12 +58,12 @@ With SQL Wrangler you can...
 	(Hit ESC it will cancel and the buttons will come back now.)
 
 ## HOW TO SETUP CONNECTIONS...
-Stick them in the file "local-connectionStrings.config"
+Stick them in the file "data-connectionStrings.config"
 
 If you want to prompt for a user name and password do something like.
 DATA SOURCE=TNS_SOMETHING;PASSWORD={password};USER ID={username};enlist=dynamic;
 
-SAMPLE _local-connectionStrings.config_
+SAMPLE _data-connectionStrings.config_
 ```
 <?xml version="1.0" encoding="utf-8" ?>
 <connectionStrings>
