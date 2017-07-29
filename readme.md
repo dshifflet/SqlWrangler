@@ -194,4 +194,7 @@ select * from northwind.customer where rownum<100
 	}
 }
 ```
+## ICONS
+Fugue Icons are created by Yusuke Kamiyamane
+    <http://p.yusukekamiyamane.com/> and licensed under Creative Commons Attribution 3.0 <http://creativecommons.org/licenses/by/3.0/> license. 
 
