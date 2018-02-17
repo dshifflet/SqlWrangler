@@ -203,3 +203,5 @@ FakesAssemblies/
 
 #connection strings
 *connectionStrings.config
+SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/db.lock
+SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/storage.ide

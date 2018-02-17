@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -62,17 +59,32 @@ namespace SqlWrangler
             WriteMappings(table, sw, fields);
             WriteMaterializer(table, sw, fields);
             sw.WriteLine("}");
+            sw.WriteLine("");
+            sw.WriteLine("");
+            sw.WriteLine("/*****************************/");
+            sw.WriteLine("/****** EF CORE SNIPPETS  ****/");
+            sw.WriteLine("/*****************************/");
+            sw.WriteLine("");
+            sw.WriteLine("");
+            WriteModelClass(table, sw, fields, true);
         }
 
-        private void WriteModelClass(DataTable table, StreamWriter sw, IEnumerable<FieldDefinition> fields)
+        private void WriteModelClass(DataTable table, StreamWriter sw, IEnumerable<FieldDefinition> fields, bool withEfAnnotations = false)
         {            
             var tableNm = GetFieldName(table.TableName);
 
             sw.WriteLine("\t//MODEL");
+            if (withEfAnnotations)
+            {
+                sw.WriteLine("\t[Table(\"{0}\", Schema = \"TODO\")]", table.TableName);
+            }
             sw.WriteLine("\tpublic class {0}", tableNm);
             sw.WriteLine("\t{");
-            sw.WriteLine("\t\t//{0}", table.TableName);
-
+            if (!withEfAnnotations)
+            {
+                sw.WriteLine("\t\t//{0}", table.TableName);
+            }
+            
             foreach (var field in fields)
             {
                 //It's difficult to tell the precision to know what is bools or not.  SUCKS.
@@ -93,7 +105,29 @@ namespace SqlWrangler
                         fieldType = "bool";
                     }
                 }
-                sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }} //{2}", fieldType, field.Name, field.DbFieldName);
+                if (withEfAnnotations)
+                {
+                    sw.WriteLine("");
+                    if (field.Name.Equals("Id"))
+                    {
+                        sw.WriteLine("\t\t[Key]");
+                    }
+                    sw.WriteLine("\t\t[Column(\"{0}\")]", field.DbFieldName);
+                    if (fieldType.Equals("string"))
+                    {
+                        if (!field.AllowsNull)
+                        {
+                            sw.WriteLine("\t\t[Required]");
+                        }
+                        sw.WriteLine("\t\t[StringLength({0})]", field.Length);
+                    }
+                    sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }}", fieldType, field.Name);
+                }
+                else
+                {
+                    sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }} //{2}", fieldType, field.Name, field.DbFieldName);
+                }
+                
             }
             sw.WriteLine("\t}");
             sw.WriteLine();
