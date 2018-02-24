@@ -39,6 +39,7 @@ _AUTOCOMMIT ALWAYS!!!_
 With SQL Wrangler you can...
 
 * Run SQL, get the data in a grid
+* Even run SQL against Excel Files
 * Export the grid to 
 	- CSV
 	- JSON
