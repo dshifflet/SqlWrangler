@@ -71,7 +71,7 @@ SAMPLE _data-connectionStrings.config_
   <add name="SomeConnection" connectionString="DATA SOURCE=TNS_SAMPLE;PASSWORD={password};USER ID={username};enlist=dynamic;Connection Timeout=60;"/>
 </connectionStrings>
 ```
-##HOW TO WORK WITH EXCEL FILES
+## HOW TO WORK WITH EXCEL FILES
 It uses the Microsoft Access Database Engine 2010 Redistributable to work with Excel files.  You will need to install it.
 
 You should compile the application to the platform version of the redistributable (32bit or 64bit)!  Any CPU may or may not work!
