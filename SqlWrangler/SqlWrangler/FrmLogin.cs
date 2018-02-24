@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using NHibernate;
 using NHibernate.Cache;
@@ -99,6 +101,21 @@ namespace SqlWrangler
                     dbi.LogSqlInConsole = false;
                 });
             }
+            else if (connectionString.ToUpper().Contains("OLEDB."))
+            {
+                //is sql lite
+                nhConfiguration.DataBaseIntegration(dbi =>
+                {
+                    dbi.Dialect<GenericDialect>();
+                    dbi.Driver<OleDbDriver>();
+                    dbi.ConnectionProvider<DriverConnectionProvider>();
+                    dbi.IsolationLevel = IsolationLevel.ReadCommitted;
+                    dbi.ConnectionString = connectionString;
+                    dbi.Timeout = 60;
+                    dbi.LogFormattedSql = false;
+                    dbi.LogSqlInConsole = false;
+                });
+            }
             else if (connectionString.ToUpper().EndsWith(".DB"))
             {
                 //is sql lite
@@ -112,7 +129,7 @@ namespace SqlWrangler
                     dbi.Timeout = 60;
                     dbi.LogFormattedSql = false;
                     dbi.LogSqlInConsole = false;
-                });                
+                });
             }
             else
             {
@@ -164,5 +181,57 @@ namespace SqlWrangler
             }
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var openFd = new OpenFileDialog()
+            {
+                CheckFileExists = true,
+                Filter = "Excel Files |*.xls;*.xlsx;*.xlsm;"
+            };
+            ;
+            if (openFd.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            
+            try
+            {
+                var fm = new FrmMain();
+                //Create connection
+
+                var cn = CreateNhSessionFactory(GetExcelConnectionString(openFd.FileName)).OpenStatelessSession().Connection;
+                fm.Connection = cn;
+                fm.Login = this;
+                fm.Text = string.Format("Sql Wrangler connected to {0}", openFd.FileName);
+                fm.Show();
+                Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private string GetExcelConnectionString(string fileName)
+        {
+            var connectionTemplate = "";
+            if (fileName.Trim().EndsWith(".xlsx") || fileName.Trim().EndsWith(".xlsm"))
+            {
+                connectionTemplate =
+                    "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=1\";";
+            }
+            else if (fileName.Trim().EndsWith(".xls"))
+            {
+                connectionTemplate =
+                    "Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\";";
+            }
+            if (string.IsNullOrEmpty(connectionTemplate))
+            {
+                throw new FileLoadException("Not a valid excel file.");
+            }
+
+            return string.Format(connectionTemplate, fileName);
+        }
     }
 }

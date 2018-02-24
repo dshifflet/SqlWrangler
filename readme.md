@@ -70,6 +70,22 @@ SAMPLE _data-connectionStrings.config_
   <add name="SomeConnection" connectionString="DATA SOURCE=TNS_SAMPLE;PASSWORD={password};USER ID={username};enlist=dynamic;Connection Timeout=60;"/>
 </connectionStrings>
 ```
+##HOW TO WORK WITH EXCEL FILES
+It uses the Microsoft Access Database Engine 2010 Redistributable to work with Excel files.  You will need to install it.
+
+You should compile the application to the platform version of the redistributable (32bit or 64bit)!  Any CPU may or may not work!
+
+At the logon screen click the button on the lower right hand side with the excel icon.
+
+The SQL is like this:
+
+SELECT * FROM [<WORKSHEET_NAME>$]
+
+aka
+
+SELECT * FROM [MyWorkSheet$]
+
+If you column headers has spaces wrap them in [My Column Name], just like the table names.
 
 ## KEYBOARD SHORTCUTS...
 
