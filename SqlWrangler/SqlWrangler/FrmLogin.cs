@@ -101,9 +101,10 @@ namespace SqlWrangler
                     dbi.LogSqlInConsole = false;
                 });
             }
-            else if (connectionString.ToUpper().Contains("OLEDB."))
+            else if (connectionString.ToUpper().Contains("MICROSOFT.ACE.OLEDB") ||
+                     connectionString.ToUpper().Contains("MICROSOFT.JET.OLEDB"))
             {
-                //is sql lite
+                //is OLE DB
                 nhConfiguration.DataBaseIntegration(dbi =>
                 {
                     dbi.Dialect<GenericDialect>();
