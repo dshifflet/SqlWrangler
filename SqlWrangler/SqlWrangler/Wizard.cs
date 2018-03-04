@@ -7,6 +7,13 @@ using System.Windows.Forms;
 namespace SqlWrangler
 {
 
+    public enum MapperAttributeType
+    {
+        None,
+        EntityFramework,
+        Linq2Db
+    }
+
     internal class FieldDefinition
     {
         public string TableName { get; set; }
@@ -55,44 +62,44 @@ namespace SqlWrangler
             sw.WriteLine("*/");
             sw.WriteLine("");
             var fields = GetFields(table.CreateDataReader()).ToArray();
-            WriteModelClass(table, sw, fields);
+            WriteModelClass(table, sw, fields, MapperAttributeType.None);
             WriteMappings(table, sw, fields);
             WriteMaterializer(table, sw, fields);
             sw.WriteLine("}");
             sw.WriteLine("");
             sw.WriteLine("");
             sw.WriteLine("/*****************************/");
-            sw.WriteLine("/****** EF CORE SNIPPETS  ****/");
+            sw.WriteLine("/****   EntityFramework   ****/");
             sw.WriteLine("/*****************************/");
             sw.WriteLine("");
             sw.WriteLine("");
-            WriteModelClass(table, sw, fields, true);
+            WriteModelClass(table, sw, fields, MapperAttributeType.EntityFramework);
+            sw.WriteLine("/*****************************/");
+            sw.WriteLine("/****      LINQ 2 DB      ****/");
+            sw.WriteLine("/*****************************/");
+            sw.WriteLine("");
+            sw.WriteLine("");
+            WriteModelClass(table, sw, fields, MapperAttributeType.Linq2Db);
         }
 
-        private void WriteModelClass(DataTable table, StreamWriter sw, IEnumerable<FieldDefinition> fields, bool withEfAnnotations = false)
+        private void WriteModelClass(DataTable table, StreamWriter sw, IEnumerable<FieldDefinition> fields, MapperAttributeType attributeType)
         {            
             var tableNm = GetFieldName(table.TableName);
 
             sw.WriteLine("\t//MODEL");
-            if (withEfAnnotations)
+            if (attributeType==MapperAttributeType.EntityFramework || attributeType == MapperAttributeType.Linq2Db)
             {
                 sw.WriteLine("\t[Table(\"{0}\", Schema = \"TODO\")]", table.TableName);
             }
             sw.WriteLine("\tpublic class {0}", tableNm);
             sw.WriteLine("\t{");
-            if (!withEfAnnotations)
+            if (attributeType==MapperAttributeType.None)
             {
                 sw.WriteLine("\t\t//{0}", table.TableName);
             }
             
             foreach (var field in fields)
             {
-                //It's difficult to tell the precision to know what is bools or not.  SUCKS.
-                //Leave it up to the user.  It's almost wizardry
-                /*if (field.Name.Equals("isdeleted", StringComparison.OrdinalIgnoreCase))
-                {
-                    sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }} //{2}", "bool", field.Name, field.DbFieldName);
-                }*/
                 var fieldType = field.Type;
                 if (field.IsShortBool)
                 {
@@ -105,34 +112,56 @@ namespace SqlWrangler
                         fieldType = "bool";
                     }
                 }
-                if (withEfAnnotations)
+                switch (attributeType)
                 {
-                    sw.WriteLine("");
-                    if (field.Name.Equals("Id"))
-                    {
-                        sw.WriteLine("\t\t[Key]");
-                    }
-                    sw.WriteLine("\t\t[Column(\"{0}\")]", field.DbFieldName);
-                    if (fieldType.Equals("string"))
-                    {
-                        if (!field.AllowsNull)
-                        {
-                            sw.WriteLine("\t\t[Required]");
-                        }
-                        sw.WriteLine("\t\t[StringLength({0})]", field.Length);
-                    }
-                    sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }}", fieldType, field.Name);
+                    case MapperAttributeType.EntityFramework:
+                        WriteEntityFrameworkField(sw, field, fieldType);
+                        break;
+                    case MapperAttributeType.Linq2Db:
+                        WriteLinq2DbField(sw, field, fieldType);
+                        break;
+                    default:
+                        sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }} //{2}", fieldType, field.Name, field.DbFieldName);
+                        break;
                 }
-                else
-                {
-                    sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }} //{2}", fieldType, field.Name, field.DbFieldName);
-                }
-                
             }
             sw.WriteLine("\t}");
             sw.WriteLine();
             sw.WriteLine();
 
+        }
+
+        private void WriteLinq2DbField(StreamWriter sw, FieldDefinition field, string fieldType)
+        {
+            sw.WriteLine("");
+            if (field.Name.Equals("Id"))
+            {
+                sw.WriteLine("\t\t[PrimaryKey, Identity]");
+            }
+
+            sw.WriteLine("\t\t[Column(Name = \"{0}\"), {1}]", field.DbFieldName,
+                field.AllowsNull ? "Nullable" : "NotNull");
+
+            sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }}", fieldType, field.Name);
+        }
+
+        private void WriteEntityFrameworkField(StreamWriter sw, FieldDefinition field, string fieldType)
+        {
+            sw.WriteLine("");
+            if (field.Name.Equals("Id"))
+            {
+                sw.WriteLine("\t\t[Key]");
+            }
+            sw.WriteLine("\t\t[Column(\"{0}\")]", field.DbFieldName);
+            if (fieldType.Equals("string"))
+            {
+                if (!field.AllowsNull)
+                {
+                    sw.WriteLine("\t\t[Required]");
+                }
+                sw.WriteLine("\t\t[StringLength({0})]", field.Length);
+            }
+            sw.WriteLine("\t\tpublic {0} {1} {{ get; set; }}", fieldType, field.Name);
         }
 
         private void WriteMaterializer(DataTable table, StreamWriter sw, IEnumerable<FieldDefinition> fields)
