@@ -59,7 +59,7 @@ With SQL Wrangler you can...
 	(Hit ESC it will cancel and the buttons will come back now.)
 
 ## HOW TO SETUP CONNECTIONS...
-Stick them in the file "data-connectionStrings.config"
+Stick them in the file "data-connectionStrings.config".  You may need to create this file.
 
 If you want to prompt for a user name and password do something like.
 DATA SOURCE=TNS_SOMETHING;PASSWORD={password};USER ID={username};
@@ -68,7 +68,7 @@ SAMPLE _data-connectionStrings.config_
 ```
 <?xml version="1.0" encoding="utf-8" ?>
 <connectionStrings>
-  <add name="SomeConnection" connectionString="DATA SOURCE=TNS_SAMPLE;PASSWORD={password};USER ID={username};enlist=dynamic;Connection Timeout=60;"/>
+  <add name="SomeConnection" connectionString="DATA SOURCE=TNS_SAMPLE;PASSWORD={password};USER ID={username};enlist=dynamic;Connection Timeout=60;" providerName="Oracle.ManagedDataAccess.Client"/>
 </connectionStrings>
 ```
 ## HOW TO WORK WITH EXCEL FILES
