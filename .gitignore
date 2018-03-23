@@ -199,11 +199,15 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-/CAMP.EHM.Reports/ReportEngine/Reports
+
+# vs settings
+*/sqlite3/db.lock
+*/sqlite3/storage.ide
+*/sqlite3/storage.ide-wal
+*/sqlite3/storage.ide-shm
+*/.vs/*
+.vs/*
 
 #connection strings
 *connectionStrings.config
-SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/db.lock
-SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/storage.ide
-/SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/storage.ide-wal
-/SqlWrangler/.vs/SqlWrangler/v15/Server/sqlite3/storage.ide-shm
+
