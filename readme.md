@@ -211,7 +211,7 @@ select * from northwind.customer where rownum<100
 	}
 }
 ```
-Generating C# Code will also now generate code for Linq2DB and EntityFramework
+Generating C# Code will also now generate code for EntityFramework and Linq2DB.
 ```
 
 /*****************************/
