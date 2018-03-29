@@ -211,6 +211,99 @@ select * from northwind.customer where rownum<100
 	}
 }
 ```
+Generating C# Code will also now generate code for Linq2DB and EntityFramework
+```
+
+/*****************************/
+/****   EntityFramework   ****/
+/*****************************/
+
+	//MODEL
+	[Table("PRODUCTS", Schema = "TODO")]
+	public class Products
+	{
+
+		[Key]
+		[Column("PRODUCT_ID")]
+		public int Id { get; set; }
+
+		[Column("PRODUCT_NAME")]
+		[Required]
+		[StringLength(40)]
+		public string ProductName { get; set; }
+
+		[Column("SUPPLIER_ID")]
+		public int SupplierId { get; set; }
+
+		[Column("CATEGORY_ID")]
+		public int CategoryId { get; set; }
+
+		[Column("QUANTITY_PER_UNIT")]
+		[StringLength(20)]
+		public string QuantityPerUnit { get; set; }
+
+		[Column("UNIT_PRICE")]
+		public double UnitPrice { get; set; }
+
+		[Column("UNITS_IN_STOCK")]
+		public int UnitsInStock { get; set; }
+
+		[Column("UNITS_ON_ORDER")]
+		public int UnitsOnOrder { get; set; }
+
+		[Column("REORDER_LEVEL")]
+		public int ReorderLevel { get; set; }
+
+		[Column("DISCONTINUED")]
+		[Required]
+		[StringLength(1)]
+		public string Discontinued { get; set; }
+	}
+
+
+/*****************************/
+/****      LINQ 2 DB      ****/
+/*****************************/
+
+
+	//MODEL
+	[Table("PRODUCTS", Schema = "TODO")]
+	public class Products
+	{
+
+		[PrimaryKey, Identity]
+		[Column(Name = "PRODUCT_ID"), NotNull]
+		public int Id { get; set; }
+
+		[Column(Name = "PRODUCT_NAME"), NotNull]
+		public string ProductName { get; set; }
+
+		[Column(Name = "SUPPLIER_ID"), NotNull]
+		public int SupplierId { get; set; }
+
+		[Column(Name = "CATEGORY_ID"), NotNull]
+		public int CategoryId { get; set; }
+
+		[Column(Name = "QUANTITY_PER_UNIT"), Nullable]
+		public string QuantityPerUnit { get; set; }
+
+		[Column(Name = "UNIT_PRICE"), NotNull]
+		public double UnitPrice { get; set; }
+
+		[Column(Name = "UNITS_IN_STOCK"), NotNull]
+		public int UnitsInStock { get; set; }
+
+		[Column(Name = "UNITS_ON_ORDER"), NotNull]
+		public int UnitsOnOrder { get; set; }
+
+		[Column(Name = "REORDER_LEVEL"), NotNull]
+		public int ReorderLevel { get; set; }
+
+		[Column(Name = "DISCONTINUED"), NotNull]
+		public string Discontinued { get; set; }
+	}
+```
+
 ## ICONS
 Fugue Icons are created by Yusuke Kamiyamane
     <http://p.yusukekamiyamane.com/> and licensed under Creative Commons Attribution 3.0 <http://creativecommons.org/licenses/by/3.0/> license. 
