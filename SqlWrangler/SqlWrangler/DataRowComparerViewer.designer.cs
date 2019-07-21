@@ -74,8 +74,8 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(799, 184);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
-            this.dataGridView1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_RowHeaderMouseClick);
+            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView1_ColumnHeaderMouseClick);
+            this.dataGridView1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView1_RowHeaderMouseClick);
             // 
             // menuStrip1
             // 
@@ -95,7 +95,7 @@
             this.setKeyToolStripMenuItem.Name = "setKeyToolStripMenuItem";
             this.setKeyToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.setKeyToolStripMenuItem.Text = "Set Key";
-            this.setKeyToolStripMenuItem.Click += new System.EventHandler(this.setKeyToolStripMenuItem_Click);
+            this.setKeyToolStripMenuItem.Click += new System.EventHandler(this.SetKeyToolStripMenuItem_Click);
             // 
             // setCheckFieldsToolStripMenuItem
             // 
@@ -103,7 +103,7 @@
             this.setCheckFieldsToolStripMenuItem.Name = "setCheckFieldsToolStripMenuItem";
             this.setCheckFieldsToolStripMenuItem.Size = new System.Drawing.Size(120, 20);
             this.setCheckFieldsToolStripMenuItem.Text = "Set Check Fields";
-            this.setCheckFieldsToolStripMenuItem.Click += new System.EventHandler(this.setCheckFieldsToolStripMenuItem_Click);
+            this.setCheckFieldsToolStripMenuItem.Click += new System.EventHandler(this.SetCheckFieldsToolStripMenuItem_Click);
             // 
             // clearAllCheckFieldsToolStripMenuItem
             // 
@@ -111,7 +111,7 @@
             this.clearAllCheckFieldsToolStripMenuItem.Name = "clearAllCheckFieldsToolStripMenuItem";
             this.clearAllCheckFieldsToolStripMenuItem.Size = new System.Drawing.Size(148, 20);
             this.clearAllCheckFieldsToolStripMenuItem.Text = "Clear All Check Fields";
-            this.clearAllCheckFieldsToolStripMenuItem.Click += new System.EventHandler(this.clearAllCheckFieldsToolStripMenuItem_Click);
+            this.clearAllCheckFieldsToolStripMenuItem.Click += new System.EventHandler(this.ClearAllCheckFieldsToolStripMenuItem_Click);
             // 
             // dataGridView2
             // 

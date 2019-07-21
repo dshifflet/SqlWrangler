@@ -25,13 +25,9 @@ namespace SqlWrangler
             var i = Icon.FromHandle(pIcon);
             Icon = i;
             i.Dispose();
-
-
-            if (table == null) throw new ArgumentNullException(nameof(table));
-            
             InitializeComponent();
             _title = title;
-            _table = table;
+            _table = table ?? throw new ArgumentNullException(nameof(table));
             _lookAtColumns = new List<int>();
             //dataGridView1.EnableHeadersVisualStyles = false;
             FillGrid();
@@ -52,7 +48,7 @@ namespace SqlWrangler
                 _comparerResults.Add(Compare(row, _table, _table.Columns[_keyIndex].ColumnName));
             }
                         
-            dataGridView1.CellFormatting+=dataGridView1_CellFormatting;
+            dataGridView1.CellFormatting+=DataGridView1_CellFormatting;
             dataGridView1.DataSource = _table;
 
             foreach (DataGridViewColumn dc in dataGridView1.Columns)
@@ -66,7 +62,7 @@ namespace SqlWrangler
          
         }
 
-        void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= _table.Rows.Count) return;
 
@@ -123,7 +119,7 @@ namespace SqlWrangler
             }
         }
 
-        private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void DataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DisplayDetailForRow(e.RowIndex);
         }
@@ -151,7 +147,7 @@ namespace SqlWrangler
             }                
         }
 
-        private void setKeyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _mode = _mode.Equals("setkey") ? "" : "setkey";
             ToggleMenuItems();
@@ -211,7 +207,7 @@ namespace SqlWrangler
             }
         }
 
-        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (string.IsNullOrEmpty(_mode)) return;
 
@@ -244,13 +240,13 @@ namespace SqlWrangler
             ToggleMenuItems();
         }
 
-        private void setCheckFieldsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetCheckFieldsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _mode = _mode.Equals("setcheck") ? "" : "setcheck";
             ToggleMenuItems();
         }
 
-        private void clearAllCheckFieldsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ClearAllCheckFieldsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _lookAtColumns.Clear();
             FillGrid();
