@@ -122,6 +122,7 @@
     <value>..\images\wand-magic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="flask--arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <!-- ReSharper disable once MarkupTextTypo -->
     <value>..\images\flask--arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="table-excel" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -149,6 +150,7 @@
     <value>..\images\script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="toolbox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <!-- ReSharper disable once MarkupTextTypo -->
     <value>..\images\toolbox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="molecule" type="System.Resources.ResXFileRef, System.Windows.Forms">

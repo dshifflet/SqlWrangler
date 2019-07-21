@@ -27,7 +27,7 @@ namespace SqlWrangler
             i.Dispose();
 
 
-            if (table == null) throw new ArgumentNullException("table");
+            if (table == null) throw new ArgumentNullException(nameof(table));
             
             InitializeComponent();
             _title = title;
@@ -132,8 +132,7 @@ namespace SqlWrangler
         {
             var id = _table.Rows[rowIndex][_keyIndex].ToString();
             var check = _comparerResults.FirstOrDefault(o => o.Key.Equals(id));
-            var list = new List<DataRow>();
-            list.Add(_table.Rows[rowIndex]);
+            var list = new List<DataRow> {_table.Rows[rowIndex]};
             if (check != null)
             {
                 if (check.Duplicates.Any())
@@ -154,14 +153,7 @@ namespace SqlWrangler
 
         private void setKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_mode.Equals("setkey"))
-            {
-                _mode = "";
-            }
-            else
-            {
-                _mode = "setkey";    
-            }
+            _mode = _mode.Equals("setkey") ? "" : "setkey";
             ToggleMenuItems();
         }
 
@@ -254,14 +246,7 @@ namespace SqlWrangler
 
         private void setCheckFieldsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_mode.Equals("setcheck"))
-            {
-                _mode = "";
-            }
-            else
-            {
-                _mode = "setcheck";
-            }
+            _mode = _mode.Equals("setcheck") ? "" : "setcheck";
             ToggleMenuItems();
         }
 

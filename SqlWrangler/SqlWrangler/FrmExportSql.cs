@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -9,14 +10,15 @@ using SqlWrangler.Properties;
 
 namespace SqlWrangler
 {
+    [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
     public partial class FrmExportSql : Form
     {
 
-        public DataTable Table { get; set; }
+        private DataTable Table { get; }
 
         public FrmExportSql(DataTable table)
         {
-            if(table==null) throw new ArgumentNullException("table");
+            if(table==null) throw new ArgumentNullException(nameof(table));
             InitializeComponent();
 
             chkInsert.Checked = Settings.Default.ExportInsert;
@@ -57,12 +59,8 @@ namespace SqlWrangler
                 OverwritePrompt = true,
                 Filter = "SQL File|*.sql",
                 Title = "Save Data as SQL for SQLite",
-                FileName = string.Format("{0}{1}{2}{3}{4}.sql", 
-                    chkCreate.Checked ? "create_" : "",
-                    chkInsert.Checked ? "insert_" : "",                
-                    txtSchema.Text.ToUpper(), 
-                    string.IsNullOrEmpty(txtSchema.Text) ? "" : "_",
-                    txtName.Text.ToUpper())
+                FileName =
+                    $"{(chkCreate.Checked ? "create_" : "")}{(chkInsert.Checked ? "insert_" : "")}{txtSchema.Text.ToUpper()}{(string.IsNullOrEmpty(txtSchema.Text) ? "" : "_")}{txtName.Text.ToUpper()}.sql"
             };
             var dr = dialog.ShowDialog();
 
@@ -117,7 +115,7 @@ namespace SqlWrangler
                 Console.WriteLine("");
                 sw.WriteLine("/* INSERT TABLE {0} */", tbl.ActualName);
                 Console.WriteLine("");
-                sw.Write(tbl.GenerateImportDataSql(dataTable, DataUpdateMode.Insert));
+                sw.Write(tbl.GenerateImportDataSql(dataTable));
                 sw.WriteLine("");
             }
         }

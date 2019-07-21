@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace SqlWrangler
         Linq2Db
     }
 
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     internal class FieldDefinition
     {
         public string TableName { get; set; }
@@ -103,14 +105,7 @@ namespace SqlWrangler
                 var fieldType = field.Type;
                 if (field.IsShortBool)
                 {
-                    if (field.AllowsNull)
-                    {
-                        fieldType = "bool?";
-                    }
-                    else
-                    {
-                        fieldType = "bool";
-                    }
+                    fieldType = field.AllowsNull ? "bool?" : "bool";
                 }
                 switch (attributeType)
                 {
@@ -182,14 +177,14 @@ namespace SqlWrangler
 
                 if (!field.Type.EndsWith("?") && !field.Type.Equals("string"))
                 {
-                    elements[0] = string.Format("({0}) ", field.Type);
+                    elements[0] = $"({field.Type}) ";
                 }
                 else
                 {                    
-                    elements[2] = string.Format(" as {0}", field.Type);
+                    elements[2] = $" as {field.Type}";
                 }
 
-                elements[1] = string.Format("reader[\"{0}\"]", field.DbFieldName);
+                elements[1] = $"reader[\"{field.DbFieldName}\"]";
                 if (field.IsShortBool)
                 {
                     //(test==null) ? (bool?) null : (test==1) ? true : false;
@@ -203,7 +198,7 @@ namespace SqlWrangler
                     else
                     {
                         sw.WriteLine("\t\t\t\t{0} = {1}", field.Name,
-                            string.Format("(short) reader[\"{0}\"]==1,", elements[1]));
+                            $"(short) reader[\"{elements[1]}\"]==1,");
                     }
                 }
                 else
@@ -264,8 +259,7 @@ namespace SqlWrangler
             var idx = 0;
             foreach (DataRow row in schema.Rows)
             {
-                var field = new FieldDefinition();
-                field.TableName = table;
+                var field = new FieldDefinition {TableName = table};
                 if (table.Contains("."))
                 {
                     var splits = table.Split('.');
@@ -289,7 +283,7 @@ namespace SqlWrangler
                 field.Type = GetDataType(row["DataType"].ToString(), field.AllowsNull);
                 if (field.Type.StartsWith("short"))
                 {
-                    if (MessageBox.Show(string.Format("[{0}] is this field intended to be used as a bool?", field.Name),
+                    if (MessageBox.Show($"[{field.Name}] is this field intended to be used as a bool?",
                         "Possible Bool Value",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.Yes)
@@ -309,8 +303,7 @@ namespace SqlWrangler
             if (input.StartsWith("System."))
             {
                 var result = input.Replace("System.", "");
-                string found;
-                if (_fieldTypes.TryGetValue(result, out found))
+                if (_fieldTypes.TryGetValue(result, out var found))
                 {
                     if (found != "string" && allownull)
                     {

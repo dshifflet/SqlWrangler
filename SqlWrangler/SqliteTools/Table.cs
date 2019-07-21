@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
 namespace SqliteTools
 {
+    [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
     public class Table
     {
         /// <summary>
         /// Schema of Table
         /// </summary>
-        public string Schema { get; private set; }
+        private string Schema { get; set; }
         /// <summary>
         /// Table Name
         /// </summary>
-        public string Name { get; private set; }
+        private string Name { get; set; }
 
         public string ActualName
         {
@@ -24,9 +26,7 @@ namespace SqliteTools
                 {
                     return Name;
                 }
-                return string.Format("{0}{1}{2}", Schema,
-                    string.IsNullOrEmpty(Schema) ? "" : "_",
-                    Name);
+                return $"{Schema}{(string.IsNullOrEmpty(Schema) ? "" : "_")}{Name}";
             }
         }
         
@@ -37,8 +37,7 @@ namespace SqliteTools
         /// <param name="schema">The schema of the table.  (Note: this will be schema_tablename, null will be tablename)</param>
         public Table(string name, string schema)
         {
-            if(name==null) throw new ArgumentNullException("name");
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Schema = schema;
         }
 
@@ -55,8 +54,7 @@ namespace SqliteTools
         /// Import data from a datatable to the table.
         /// </summary>
         /// <param name="table"></param>
-        /// <param name="mode">Type of import you want to do.</param>
-        public string GenerateImportDataSql(DataTable table, DataUpdateMode mode)
+        public string GenerateImportDataSql(DataTable table)
         {
             var sb = new StringBuilder();
             foreach (DataRow row in table.Rows)
@@ -68,7 +66,7 @@ namespace SqliteTools
 
         private string GenerateCreateTableSql(DataTable table)
         {
-            var sql = string.Format("create table {0} (\r\n", ActualName);
+            var sql = $"create table {ActualName} (\r\n";
             string columns = null;
             var idx = 0;
             foreach (DataColumn col in table.Columns)
@@ -80,7 +78,7 @@ namespace SqliteTools
                 //we would need to change it so it works off a datatble returned from something like DataReader.GetSchemaTable.
                 var sqlType = SqliteTypes.Types[col.DataType];
 
-                if (col.MaxLength > 0) sqlType += string.Format("({0})", col.MaxLength);
+                if (col.MaxLength > 0) sqlType += $"({col.MaxLength})";
 
                 var options = "";
                 //Can be null?
@@ -95,9 +93,9 @@ namespace SqliteTools
                     if (ReferenceEquals(col.DefaultValue, typeof(string)))
                     {
                         //todo make sure this works, cause this is some lame escaping.
-                        defaultValue = string.Format("'{0}'", defaultValue.Replace("'", "''"));
+                        defaultValue = $"'{defaultValue.Replace("'", "''")}'";
                     }
-                    options += string.Format(" DEFAULT({0})", defaultValue);
+                    options += $" DEFAULT({defaultValue})";
                 }
                 
                 //primary keys
@@ -106,7 +104,7 @@ namespace SqliteTools
                 {
                     options += ",";
                 }
-                columns += string.Format("{0} {1}{2}\r\n", col.ColumnName, sqlType, options);
+                columns += $"{col.ColumnName} {sqlType}{options}\r\n";
                 
             }
             sql += columns + ");\r\n";
@@ -149,19 +147,19 @@ namespace SqliteTools
                 }
                 else if (IsString(col.DataType))
                 {
-                    values += string.Format("'{0}'", val.Replace("'", "''"));
+                    values += $"'{val.Replace("'", "''")}'";
                 }
                 else if (IsDateTime(col.DataType))
                 {
                     val = ((DateTime)row[col.ColumnName]).ToString("yyyy-MM-dd HH:mm:ss.FFF");
-                    values += string.Format("'{0}'", val);
+                    values += $"'{val}'";
                 }
                 else
                 {
                     values += val;
                 }
             }
-            var sql = string.Format("insert into {0} ({1}) values ({2})", ActualName, columns, values);
+            var sql = $"insert into {ActualName} ({columns}) values ({values})";
 
             return sql;
         }

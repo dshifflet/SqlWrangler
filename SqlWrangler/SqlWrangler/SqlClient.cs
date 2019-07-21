@@ -18,8 +18,8 @@ namespace SqlWrangler
 {
     public partial class SqlClient : Form
     {
-        public IDbConnection Connection { get; set; }
-        public List<TextSnippet> Snippets { get; set; }
+        public IDbConnection Connection { private get; set; }
+        private List<TextSnippet> Snippets { get; }
         private IDbCommand _command;
         private Task _task;
 
@@ -53,7 +53,7 @@ namespace SqlWrangler
                         var checkTs = (ToolStripMenuItem) sender;
 
                         var dr = MessageBox.Show(
-                            string.Format("Remove item \"{0}\"?", checkTs.Text),
+                            $"Remove item \"{checkTs.Text}\"?",
                             "Remove Item",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
@@ -341,17 +341,17 @@ namespace SqlWrangler
                 }
             }
 
-            toolStripStatusLabel1.Text = string.Format("Rows found {0}", dataGridView1.RowCount);
+            toolStripStatusLabel1.Text = $"Rows found {dataGridView1.RowCount}";
             if (reader.RecordsAffected >= 0)
             {
-                textBox2.Text += string.Format("Rows affected {0}\r\n", reader.RecordsAffected);
+                textBox2.Text += $"Rows affected {reader.RecordsAffected}\r\n";
             }            
         }
 
 
         private void DoneUpdatingGrid(Stopwatch stopwatch, string sql)
         {
-            textBox2.Text += string.Format("Executed in {0} ms\r\n", stopwatch.ElapsedMilliseconds);
+            textBox2.Text += $"Executed in {stopwatch.ElapsedMilliseconds} ms\r\n";
 
             if (dataGridView1.RowCount > 0)
             {
@@ -408,10 +408,9 @@ namespace SqlWrangler
         {
             foreach (var control in colorsToolStripMenuItem.DropDownItems)
             {
-                if (control is ToolStripMenuItem && sender is ToolStripMenuItem)
+                if (control is ToolStripMenuItem tsmi && sender is ToolStripMenuItem item)
                 {
-                    var tsmi = (ToolStripMenuItem)control;
-                    if (tsmi != (ToolStripMenuItem)sender)
+                    if (tsmi != item)
                     {
                         if (tsmi.CheckOnClick)
                         {
@@ -514,7 +513,7 @@ namespace SqlWrangler
                 
                 foreach (DataRow row in schema.Rows)                   
                 {
-                    sb.Append(string.Format("\t{0},\r\n", row["ColumnName"]));
+                    sb.Append($"\t{row["ColumnName"]},\r\n");
                 }
                 var txt = sb.ToString();
                 if (txt.EndsWith(",\r\n"))
@@ -545,8 +544,8 @@ namespace SqlWrangler
                         MessageBoxIcon.Exclamation);
                 return;
             }
-            var wnd = new DataRowComparerViewer(dataTable, "Data Comparer");
-            wnd.MdiParent = MdiParent;
+
+            var wnd = new DataRowComparerViewer(dataTable, "Data Comparer") {MdiParent = MdiParent};
             wnd.Show();
         }
     }

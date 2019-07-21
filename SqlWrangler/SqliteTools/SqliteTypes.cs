@@ -6,7 +6,7 @@ namespace SqliteTools
     
     public static class SqliteTypes
     {
-        public static Dictionary<Type, string> Types = new Dictionary<Type, string>()
+        public static readonly Dictionary<Type, string> Types = new Dictionary<Type, string>()
         {
             {typeof(short),     "SMALLINT"},
             {typeof(int),       "INT"},

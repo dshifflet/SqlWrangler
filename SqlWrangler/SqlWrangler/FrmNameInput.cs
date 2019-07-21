@@ -7,7 +7,7 @@ namespace SqlWrangler
 {
     public partial class FrmNameInput : Form
     {
-        public string UserName { get; set; }
+        public string UserName { get; private set; }
 
         public FrmNameInput()
         {

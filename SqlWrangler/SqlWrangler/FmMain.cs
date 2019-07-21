@@ -13,9 +13,9 @@ namespace SqlWrangler
     public partial class FrmMain : Form
     {
 
-        public IDbConnection Connection { get; set; }
-        public FrmLogin Login { get; set; }
-        public List<TextSnippet> Snippets = new List<TextSnippet>();
+        public IDbConnection Connection { private get; set; }
+        public FrmLogin Login { private get; set; }
+        private List<TextSnippet> _snippets = new List<TextSnippet>();
 
         public FrmMain()
         {
@@ -39,7 +39,7 @@ namespace SqlWrangler
 
         private void NewSqlForm()
         {
-            var newForm = new SqlClient(Snippets)
+            var newForm = new SqlClient(_snippets)
             {
                 Connection = Connection,
                 MdiParent = this
@@ -62,7 +62,7 @@ namespace SqlWrangler
             var serializer = new XmlSerializer(typeof (List<TextSnippet>));
             using (var tw = XmlWriter.Create(fi.OpenWrite()))
             {
-                serializer.Serialize(tw, Snippets);
+                serializer.Serialize(tw, _snippets);
             }
         }
 
@@ -89,7 +89,7 @@ namespace SqlWrangler
                 {
                     using (var sr = new StreamReader(xmlfi.OpenRead()))
                     {
-                        Snippets = (List<TextSnippet>) serializer.Deserialize(sr);
+                        _snippets = (List<TextSnippet>) serializer.Deserialize(sr);
                     }
                 }
                 return;
@@ -117,7 +117,7 @@ namespace SqlWrangler
                                 Name = splits[0],
                                 Text = splits[1].Replace(@"\r", "\r").Replace(@"\n", "\n").Replace(@"\t", "\t")
                             };
-                            Snippets.Add(snip);
+                            _snippets.Add(snip);
                         }
                         s = sr.ReadLine();
                     }
@@ -141,14 +141,14 @@ namespace SqlWrangler
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(string.Format(@"
+            MessageBox.Show($@"
                 CURRENT CONNECTION
-                {0}
+                {Connection.ConnectionString}
                 ---------------------------                
                 SQL WRANGLER
 
 
-            ", Connection.ConnectionString), "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

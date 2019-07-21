@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -50,7 +49,7 @@ namespace SqlWrangler
                 var cn = CreateNhSessionFactory(cns).OpenStatelessSession().Connection;
                 fm.Connection = cn;
                 fm.Login = this;
-                fm.Text = string.Format("Sql Wrangler connected to {0}",_connectionNames[comboBox1.SelectedIndex]);
+                fm.Text = $"Sql Wrangler connected to {_connectionNames[comboBox1.SelectedIndex]}";
                 fm.Show();
                 Hide();
                 Settings.Default.LastConnection = comboBox1.SelectedIndex;
@@ -189,7 +188,7 @@ namespace SqlWrangler
                 CheckFileExists = true,
                 Filter = "Excel Files |*.xls;*.xlsx;*.xlsm;"
             };
-            ;
+            
             if (openFd.ShowDialog() == DialogResult.Cancel)
             {
                 return;
@@ -204,7 +203,7 @@ namespace SqlWrangler
                 var cn = CreateNhSessionFactory(GetExcelConnectionString(openFd.FileName)).OpenStatelessSession().Connection;
                 fm.Connection = cn;
                 fm.Login = this;
-                fm.Text = string.Format("Sql Wrangler connected to {0}", openFd.FileName);
+                fm.Text = $"Sql Wrangler connected to {openFd.FileName}";
                 fm.Show();
                 Hide();
             }
