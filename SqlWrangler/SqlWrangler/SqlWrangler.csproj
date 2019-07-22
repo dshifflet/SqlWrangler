@@ -76,6 +76,12 @@
     <Compile Include="DataRowComparerViewer.designer.cs">
       <DependentUpon>DataRowComparerViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmNameInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmNameInput.Designer.cs">
+      <DependentUpon>FrmNameInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmExportSql.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,12 +100,7 @@
     <Compile Include="FmMain.Designer.cs">
       <DependentUpon>FmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmNameInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmNameInput.Designer.cs">
-      <DependentUpon>FrmNameInput.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Models\TextSnippet.cs" />
     <Compile Include="Services\ScintillaStyler.cs" />
     <Compile Include="Services\SnippetMenuBuilder.cs" />
     <Compile Include="SqlClient.cs">
@@ -114,6 +115,9 @@
     <EmbeddedResource Include="DataRowComparerViewer.resx">
       <DependentUpon>DataRowComparerViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmNameInput.resx">
+      <DependentUpon>FrmNameInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmExportSql.resx">
       <DependentUpon>FrmExportSql.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,9 +126,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FmMain.resx">
       <DependentUpon>FmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmNameInput.resx">
-      <DependentUpon>FrmNameInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SqlClient.resx">
       <DependentUpon>SqlClient.cs</DependentUpon>

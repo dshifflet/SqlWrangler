@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
+using SqlWrangler.Models;
 using SqlWrangler.Properties;
 using SqlWrangler.Services;
 
@@ -434,11 +435,4 @@ namespace SqlWrangler
             wnd.Show();
         }
     }
-
-    public class TextSnippet
-    {
-        public string Name { get; set; }
-        public string Text { get; set; }
-    }
-
 }

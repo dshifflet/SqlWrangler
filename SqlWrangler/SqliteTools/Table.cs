@@ -19,7 +19,7 @@ namespace SqliteTools
         /// </summary>
         private string Name { get; set; }
 
-        public static readonly Dictionary<Type, string> SqlLiteTypes = new Dictionary<Type, string>()
+        private static readonly Dictionary<Type, string> SqlLiteTypes = new Dictionary<Type, string>()
         {
             {typeof(short),     "SMALLINT"},
             {typeof(int),       "INT"},

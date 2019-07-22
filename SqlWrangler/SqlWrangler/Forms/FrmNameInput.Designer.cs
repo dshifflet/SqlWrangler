@@ -1,4 +1,4 @@
-﻿namespace SqlWrangler
+﻿namespace SqlWrangler.Forms
 {
     partial class FrmNameInput
     {

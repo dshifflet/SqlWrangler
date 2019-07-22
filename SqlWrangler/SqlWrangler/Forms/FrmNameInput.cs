@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using SqlWrangler.Properties;
 
-namespace SqlWrangler
+namespace SqlWrangler.Forms
 {
     public partial class FrmNameInput : Form
     {

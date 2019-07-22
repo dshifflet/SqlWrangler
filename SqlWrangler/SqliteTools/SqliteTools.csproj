@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="DataUpdateMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqliteTypes.cs" />
     <Compile Include="Table.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

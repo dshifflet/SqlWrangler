@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using SqlWrangler.Models;
 using SqlWrangler.Properties;
 
 namespace SqlWrangler
@@ -32,7 +33,7 @@ namespace SqlWrangler
         }
 
 
-        private void newToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void NewToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             NewSqlForm();
         }
@@ -47,7 +48,7 @@ namespace SqlWrangler
             newForm.Show();            
         }
 
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             Connection.Close();
             Connection.Dispose();
@@ -129,17 +130,17 @@ namespace SqlWrangler
             }
         }
 
-        private void frmMain_DragDrop(object sender, DragEventArgs e)
+        private void FrmMain_DragDrop(object sender, DragEventArgs e)
         {
 
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show($@"
                 CURRENT CONNECTION
