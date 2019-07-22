@@ -180,6 +180,12 @@ namespace SqlWrangler
                     }     
                     break;
             }
+            FormatDataGridColumns();
+        }
+
+        private void FormatDataGridColumns()
+        {
+
             var idx = 0;
             foreach (DataGridViewColumn dgc in dataGridView1.Columns)
             {
@@ -191,17 +197,17 @@ namespace SqlWrangler
                 else
                 {
                     dgc.HeaderCell.Style.Font = new Font(dgc.HeaderCell.DataGridView.DefaultCellStyle.Font,
-                        FontStyle.Regular);                    
+                        FontStyle.Regular);
                 }
                 if (_lookAtColumns.Contains(idx))
                 {
                     dgc.HeaderCell.Style.Font = new Font(dgc.HeaderCell.DataGridView.DefaultCellStyle.Font,
-                        FontStyle.Italic | FontStyle.Underline);                    
+                        FontStyle.Italic | FontStyle.Underline);
                 }
                 else if (idx != _keyIndex)
-                {                   
+                {
                     dgc.HeaderCell.Style.Font = new Font(dgc.HeaderCell.DataGridView.DefaultCellStyle.Font,
-                        FontStyle.Regular);                                            
+                        FontStyle.Regular);
                 }
                 idx++;
             }
