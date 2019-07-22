@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SqliteTools
 {
-    
+    [Obsolete]
     public static class SqliteTypes
     {
         public static readonly Dictionary<Type, string> Types = new Dictionary<Type, string>()

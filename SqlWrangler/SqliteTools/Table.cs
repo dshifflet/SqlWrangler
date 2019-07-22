@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -17,6 +18,22 @@ namespace SqliteTools
         /// Table Name
         /// </summary>
         private string Name { get; set; }
+
+        public static readonly Dictionary<Type, string> SqlLiteTypes = new Dictionary<Type, string>()
+        {
+            {typeof(short),     "SMALLINT"},
+            {typeof(int),       "INT"},
+            {typeof(long),      "BIGINT"},
+            {typeof(byte[]),    "BLOB"},
+            {typeof(bool),      "BOOLEAN"},
+            {typeof(string),    "VARCHAR"},
+            {typeof(char[]),    "VARCHAR"},
+            {typeof(DateTime),  "DATETIME"},
+            {typeof(decimal),   "DECIMAL(10,5)"}, //todo need to think about this one...
+            {typeof(double),    "FLOAT"},
+            {typeof(float),     "REAL"},
+            {typeof(byte),      "TINYINT"}
+        };
 
         public string ActualName
         {
@@ -76,7 +93,7 @@ namespace SqliteTools
 
                 //if these types need to be more precise like for decimal...
                 //we would need to change it so it works off a datatble returned from something like DataReader.GetSchemaTable.
-                var sqlType = SqliteTypes.Types[col.DataType];
+                var sqlType = SqlLiteTypes[col.DataType];
 
                 if (col.MaxLength > 0) sqlType += $"({col.MaxLength})";
 
