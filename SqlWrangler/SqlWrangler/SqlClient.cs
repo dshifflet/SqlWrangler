@@ -6,13 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
-using ScintillaNET;
 using SqlWrangler.Properties;
+using SqlWrangler.Services;
 
 namespace SqlWrangler
 {
@@ -22,13 +21,18 @@ namespace SqlWrangler
         private List<TextSnippet> Snippets { get; }
         private IDbCommand _command;
         private Task _task;
+        private readonly ScintillaStyler _styler = new ScintillaStyler();
+        private readonly SnippetMenuBuilder _menuBuilder = new SnippetMenuBuilder();
 
         public SqlClient(List<TextSnippet> snippets)
         {
             Snippets = snippets;
             InitializeComponent();
-            ScintallaStyle();
-            BuildSnippetMenu();
+            _styler.StyleElement(textBox1);
+
+            _menuBuilder.BuildSnippetMenu(Snippets, WizardToolStripMenuItem1, 
+                ModifierKeys, textBox1, dataGridView1);
+
             menuStrip1.BackColor = SystemColors.Control;
 
             var b = Resources.script;
@@ -36,99 +40,9 @@ namespace SqlWrangler
             var i = Icon.FromHandle(pIcon);
             Icon = i;
             i.Dispose();
-
-            
         }
 
-        private void BuildSnippetMenu()
-        {
-            wizardToolStripMenuItem.DropDownItems.Clear();
-            foreach (var item in Snippets)
-            {
-                var theItem = item;
-                var ts = new ToolStripMenuItem(item.Name, null, delegate(object sender, EventArgs args)
-                {
-                    if (ModifierKeys == Keys.Control)
-                    {
-                        var checkTs = (ToolStripMenuItem) sender;
-
-                        var dr = MessageBox.Show(
-                            $"Remove item \"{checkTs.Text}\"?",
-                            "Remove Item",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question);
-
-                        if (dr == DialogResult.Yes)
-                        {
-                            wizardToolStripMenuItem.DropDownItems.Remove(checkTs);
-                            Snippets.Remove((TextSnippet) checkTs.Tag);
-                        }
-                    }
-                    else
-                    {
-                        textBox1.InsertText(textBox1.SelectionStart, theItem.Text);
-                    }
-                }) {Tag = item};
-                wizardToolStripMenuItem.DropDownItems.Add(ts);
-            }
-
-            var insertFieldSnippet = new ToolStripMenuItem("Insert Field List", null, delegate
-            {
-                InsertFields();
-            });
-
-            var addSnippet = new ToolStripMenuItem("Add Snippet", null, delegate
-            {
-                if (textBox1.SelectedText.Length == 0)
-                {
-                    MessageBox.Show("You might want to try selecting some text.", "Select some Text",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                var frmName = new FrmNameInput();
-                frmName.ShowDialog();
-                
-                if (string.IsNullOrEmpty(frmName.UserName)) return;
-                
-                var snippet = new TextSnippet()
-                {
-                    Name = frmName.UserName,
-                    Text = textBox1.SelectedText
-                };
-                Snippets.Add(snippet);
-                BuildSnippetMenu();
-            });
-            wizardToolStripMenuItem.DropDownItems.Add(insertFieldSnippet);             
-            wizardToolStripMenuItem.DropDownItems.Add(addSnippet);             
-        }
-
-        private void ScintallaStyle()
-        {
-            textBox1.StyleResetDefault();
-            textBox1.Styles[Style.Default].Font = "Consolas";
-            textBox1.Styles[Style.Default].Size = 12;       
-            textBox1.StyleClearAll();
-            
-            textBox1.Styles[Style.Sql.Default].ForeColor = Color.Silver;
-            textBox1.Styles[Style.Sql.Comment].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            textBox1.Styles[Style.Sql.CommentLine].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            textBox1.Styles[Style.Sql.CommentLineDoc].ForeColor = Color.FromArgb(128, 128, 128); // Gray
-            textBox1.Styles[Style.Sql.Number].ForeColor = Color.Olive;
-            textBox1.Styles[Style.Sql.Word].ForeColor = Color.Blue;
-            textBox1.Styles[Style.Sql.Word2].ForeColor = Color.Red;
-            textBox1.Styles[Style.Sql.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
-            textBox1.Styles[Style.Sql.Character].ForeColor = Color.FromArgb(163, 21, 21); // Red
-            //textBox1.Styles[Style.Sql.Verbatim].ForeColor = Color.FromArgb(163, 21, 21); // Red
-            //textBox1.Styles[Style.Sql.StringEol].BackColor = Color.Pink;
-            textBox1.Styles[Style.Sql.Operator].ForeColor = Color.Purple;
-            //textBox1.Styles[Style.Sql.Preprocessor].ForeColor = Color.Maroon;            
-            textBox1.Lexer = Lexer.Sql;
-            textBox1.SetKeywords(0, "select from where inner join outer left right on order by group update insert delete truncate");
-            textBox1.SetKeywords(1, "commit rollback");
-        }
-
-        private void executeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExecuteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExecuteSql();
         }
@@ -183,7 +97,7 @@ namespace SqlWrangler
             _task.Start();
         }
 
-        private void toCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToCSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridView1.DataSource != null && dataGridView1.RowCount>0)
             {
@@ -229,7 +143,7 @@ namespace SqlWrangler
             File.WriteAllLines(fi.FullName, lines);            
         }
 
-        private void textBox1_KeyUp_1(object sender, KeyEventArgs e)
+        private void TextBox1_KeyUp_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F9)
             {
@@ -237,11 +151,11 @@ namespace SqlWrangler
             }
             if (e.KeyCode == Keys.Escape)
             {
-                cancelToolStripMenuItem_Click(null, null);
+                CancelToolStripMenuItem_Click(null, null);
             }
         }
 
-        private void toXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveExternalFile(true);
         }
@@ -362,7 +276,7 @@ namespace SqlWrangler
             textBox1.Focus();            
         }
 
-        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CancelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_command != null)
             {
@@ -372,7 +286,7 @@ namespace SqlWrangler
             DoneExecuting();
         }
 
-        private void toDaveSqlToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToDaveSqlToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridView1.DataSource == null)
             {
@@ -388,12 +302,12 @@ namespace SqlWrangler
             //Connection.Dispose();
         }
 
-        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void DataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
 
         }
 
-        private void toJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             SaveExternalFile(false);
@@ -421,7 +335,7 @@ namespace SqlWrangler
             }
         }
 
-        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Uncheck(sender);
             var tsi = (ToolStripMenuItem) sender;
@@ -503,36 +417,7 @@ namespace SqlWrangler
             }
         }
 
-        private void InsertFields()
-        {
-            if (dataGridView1.DataSource != null && dataGridView1.RowCount > 0)
-            {
-                var dataTable = (DataTable)dataGridView1.DataSource;
-                var schema = dataTable.CreateDataReader().GetSchemaTable();
-                var sb = new StringBuilder();
-                
-                foreach (DataRow row in schema.Rows)                   
-                {
-                    sb.Append($"\t{row["ColumnName"]},\r\n");
-                }
-                var txt = sb.ToString();
-                if (txt.EndsWith(",\r\n"))
-                {
-                    txt = txt.Substring(0, txt.Length - 3).ToLower();
-                }
-                textBox1.InsertText(textBox1.SelectionStart, txt);
-            }
-            else
-            {
-                MessageBox.Show(
-                        "Please execute some SQL that results in rows to use this feature",
-                        "Need Data for Wizard",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);                
-            }
-        }
-
-        private void compareRowsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CompareRowsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dataTable = (DataTable)dataGridView1.DataSource;
             if (dataTable == null)

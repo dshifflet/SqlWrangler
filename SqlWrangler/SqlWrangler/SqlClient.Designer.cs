@@ -96,7 +96,7 @@
             this.textBox1.TabIndex = 2;
             this.textBox1.UseTabs = false;
             this.textBox1.WrapMode = ScintillaNET.WrapMode.Word;
-            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp_1);
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBox1_KeyUp_1);
             // 
             // menuStrip1
             // 
@@ -152,7 +152,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(973, 221);
             this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
+            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DataGridView1_DataError);
             // 
             // statusStrip1
             // 
@@ -196,7 +196,7 @@
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
             this.executeToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
             this.executeToolStripMenuItem.Text = "&Execute (F9)";
-            this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
+            this.executeToolStripMenuItem.Click += new System.EventHandler(this.ExecuteToolStripMenuItem_Click);
             // 
             // wizardToolStripMenuItem
             // 
@@ -211,7 +211,7 @@
             this.toCSVToolStripMenuItem.Name = "toCSVToolStripMenuItem";
             this.toCSVToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.toCSVToolStripMenuItem.Text = "To &CSV";
-            this.toCSVToolStripMenuItem.Click += new System.EventHandler(this.toCSVToolStripMenuItem_Click);
+            this.toCSVToolStripMenuItem.Click += new System.EventHandler(this.ToCSVToolStripMenuItem_Click);
             // 
             // toXMLToolStripMenuItem
             // 
@@ -219,7 +219,7 @@
             this.toXMLToolStripMenuItem.Name = "toXMLToolStripMenuItem";
             this.toXMLToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.toXMLToolStripMenuItem.Text = "To &XML";
-            this.toXMLToolStripMenuItem.Click += new System.EventHandler(this.toXMLToolStripMenuItem_Click);
+            this.toXMLToolStripMenuItem.Click += new System.EventHandler(this.ToXMLToolStripMenuItem_Click);
             // 
             // toJSONToolStripMenuItem
             // 
@@ -227,7 +227,7 @@
             this.toJSONToolStripMenuItem.Name = "toJSONToolStripMenuItem";
             this.toJSONToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.toJSONToolStripMenuItem.Text = "To &JSON";
-            this.toJSONToolStripMenuItem.Click += new System.EventHandler(this.toJSONToolStripMenuItem_Click);
+            this.toJSONToolStripMenuItem.Click += new System.EventHandler(this.ToJSONToolStripMenuItem_Click);
             // 
             // cancelToolStripMenuItem
             // 
@@ -236,7 +236,7 @@
             this.cancelToolStripMenuItem.Name = "cancelToolStripMenuItem";
             this.cancelToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.cancelToolStripMenuItem.Text = "Cancel";
-            this.cancelToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);
+            this.cancelToolStripMenuItem.Click += new System.EventHandler(this.CancelToolStripMenuItem_Click);
             // 
             // colorsToolStripMenuItem
             // 
@@ -260,7 +260,7 @@
             this.defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
             this.defaultToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.defaultToolStripMenuItem.Text = "Default";
-            this.defaultToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.defaultToolStripMenuItem.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // whiteToolStripMenuItem
             // 
@@ -268,7 +268,7 @@
             this.whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
             this.whiteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.whiteToolStripMenuItem.Text = "White";
-            this.whiteToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.whiteToolStripMenuItem.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -276,7 +276,7 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem2.Text = "Yellow";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // blueToolStripMenuItem
             // 
@@ -284,7 +284,7 @@
             this.blueToolStripMenuItem.Name = "blueToolStripMenuItem";
             this.blueToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.blueToolStripMenuItem.Text = "Blue";
-            this.blueToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.blueToolStripMenuItem.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -292,7 +292,7 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem3.Text = "Red";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // greenToolStripMenuItem
             // 
@@ -300,7 +300,7 @@
             this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
             this.greenToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.greenToolStripMenuItem.Text = "Green";
-            this.greenToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            this.greenToolStripMenuItem.Click += new System.EventHandler(this.ColorToolStripMenuItem_Click);
             // 
             // toDaveSqlToolStripMenuItem
             // 
@@ -308,7 +308,7 @@
             this.toDaveSqlToolStripMenuItem.Name = "toDaveSqlToolStripMenuItem";
             this.toDaveSqlToolStripMenuItem.Size = new System.Drawing.Size(119, 20);
             this.toDaveSqlToolStripMenuItem.Text = "Export to SQLite";
-            this.toDaveSqlToolStripMenuItem.Click += new System.EventHandler(this.toDaveSqlToolStripMenuItem_Click);
+            this.toDaveSqlToolStripMenuItem.Click += new System.EventHandler(this.ToDaveSqlToolStripMenuItem_Click);
             // 
             // WizardToolStripMenuItem1
             // 
@@ -324,7 +324,7 @@
             this.compareRowsToolStripMenuItem.Name = "compareRowsToolStripMenuItem";
             this.compareRowsToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
             this.compareRowsToolStripMenuItem.Text = "Compare Rows";
-            this.compareRowsToolStripMenuItem.Click += new System.EventHandler(this.compareRowsToolStripMenuItem_Click);
+            this.compareRowsToolStripMenuItem.Click += new System.EventHandler(this.CompareRowsToolStripMenuItem_Click);
             // 
             // SqlClient
             // 
