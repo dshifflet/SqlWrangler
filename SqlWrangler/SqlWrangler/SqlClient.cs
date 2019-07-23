@@ -31,7 +31,7 @@ namespace SqlWrangler
             InitializeComponent();
             _styler.StyleElement(textBox1);
 
-            _menuBuilder.BuildSnippetMenu(Snippets, WizardToolStripMenuItem1, 
+            _menuBuilder.BuildSnippetMenu(Snippets, wizardToolStripMenuItem, 
                 ModifierKeys, textBox1, dataGridView1);
 
             menuStrip1.BackColor = SystemColors.Control;

@@ -22,8 +22,6 @@ namespace SqlWrangler
         {
             InitializeComponent();
             GetSnippets();
-
-
             var b = Resources.toolbox;
             var pIcon = b.GetHicon();
             var i = Icon.FromHandle(pIcon);
